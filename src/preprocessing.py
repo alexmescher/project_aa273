@@ -78,10 +78,15 @@ def load_gpx(gpx_file: str | Path) -> pd.DataFrame:
     if "time" in df.columns:
         df["time"] = pd.to_datetime(df["time"], utc=True, errors="coerce")
 
+        # Unix timestamp (float seconds since epoch)
+        df["timestamp_s"] = df["time"].astype("int64") / 1e9
+    else:
+        df["timestamp_s"] = pd.NA
+
     # Compute elapsed time from first valid timestamp
-    if df["time"].notna().any():
-        t0 = df["time"].dropna().iloc[0]
-        df["elapsed_time_s"] = (df["time"] - t0).dt.total_seconds()
+    if df["timestamp_s"].notna().any():
+        t0 = df["timestamp_s"].dropna().iloc[0]
+        df["elapsed_time_s"] = df["timestamp_s"] - t0
     else:
         df["elapsed_time_s"] = pd.NA
 
@@ -126,15 +131,25 @@ def summarize_gpx(df: pd.DataFrame) -> dict:
 
     return summary
 
+def load_csv(path: str | Path, **kwargs) -> pd.DataFrame:
+    """
+    Load a CSV file into a pandas DataFrame.
 
-if __name__ == "__main__":
-    # Example standalone usage
-    gpx_path = "data/example.gpx"
+    Parameters
+    ----------
+    path : str | Path
+        Path to CSV file
+    **kwargs :
+        Passed to pandas.read_csv (delimiter, header, etc.)
 
-    df = load_gpx(gpx_path)
-    print(df.head())
+    Returns
+    -------
+    pd.DataFrame
+    """
+    path = Path(path)
 
-    summary = summarize_gpx(df)
-    print("\nSummary:")
-    for key, value in summary.items():
-        print(f"{key}: {value}")
+    if not path.exists():
+        raise FileNotFoundError(f"CSV file not found: {path}")
+
+    df = pd.read_csv(path, comment="#", **kwargs)
+    return df
