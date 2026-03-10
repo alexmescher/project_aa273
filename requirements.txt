@@ -2,3 +2,5 @@ pandas
 gpxpy
 numpy
 matplotlib
+opencv-python
+pyyaml
