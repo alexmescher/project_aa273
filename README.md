@@ -21,7 +21,7 @@ Flight data lives in `data/test1/` and `data/test2/`, each containing:
 - `*.gpx` — GPS ground truth track from a phone app
 - `SWP_*.MP4` — onboard video
 
-### Usage
+### IMU Usage
 
 ```bash
 # Run the dead-reckoning baseline (defaults to test2 data)
@@ -32,6 +32,24 @@ python imu_baseline_optimal.py data/test1/imu_20260304_132152.csv --gpx data/tes
 
 # Plot against GPS
 python plot_imu_gps.py
+```
+### Vision Pipeline Usage
+
+```bash
+# The output for the first clip is stored in vision_traj_xy.csv
+# It takes a very long time to run the vision pipeline (+20 min for first clip)
+# If you want to run it:
+python vision_demo.py
+
+# The output is results/vision_traj_xy.csv
+# To plot the vision trajectory:
+python plot_trajectory.py
+```
+### Sensor Fusion Usage
+
+```bash
+# Sensor fusion contains all of the sensor fusion code
+python sensor_fusion.py
 ```
 
 ### Dependencies
