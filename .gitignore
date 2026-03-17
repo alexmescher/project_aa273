@@ -2,6 +2,9 @@
 data/*.csv
 data/*.mp4
 data/*.gpx
+data/cal_images
+data/sparse
+data/*.db
 results/*.csv
 __pycache__/
 *.pyc

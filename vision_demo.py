@@ -87,7 +87,7 @@ def main():
 
     out = np.column_stack([
         times,
-        traj,
+        traj[1:],
         cov_flat
     ])
 

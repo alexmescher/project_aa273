@@ -3,16 +3,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def load_traj_csv(path: str) -> np.ndarray:
+def load_traj_csv(path: str):
     data = np.loadtxt(path, delimiter=",", skiprows=1)
 
     if data.ndim == 1:
         data = data.reshape(1, -1)
 
-    if data.shape[1] < 2:
-        raise ValueError("CSV must have at least two columns: x_m,y_m")
+    if data.shape[1] < 7:
+        raise ValueError("CSV must contain: t,x,y,Pxx,Pxy,Pyx,Pyy")
 
-    return data[:, :2]
+    t = data[:, 0]
+    x = data[:, 1]
+    y = data[:, 2]
+
+    cov = data[:, 3:7].reshape(-1, 2, 2)
+
+    return t, x, y, cov
 
 
 def main():
@@ -33,11 +39,10 @@ def main():
         action="store_true",
         help="Use equal scaling on x and y axes",
     )
+
     args = parser.parse_args()
 
-    traj = load_traj_csv(args.csv_file)
-    x = traj[:, 0]
-    y = traj[:, 1]
+    t, x, y, cov = load_traj_csv(args.csv_file)
 
     plt.figure(figsize=(8, 6))
 
