@@ -22,8 +22,8 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent
 
 # Defaults (flight 1 / test2)
-DEFAULT_TRAJ = ROOT / "imu_trajectory.csv"
-DEFAULT_GPX  = ROOT / "data" / "test2" / "04-Mar-2026-1405.gpx"
+DEFAULT_TRAJ = ROOT / "results" / "imu_trajectory.csv"
+DEFAULT_GPX  = ROOT / "data" / "04-Mar-2026-1405.gpx"
 
 
 def parse_gpx(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
@@ -108,7 +108,7 @@ def main() -> None:
                         help="GPX file with GPS ground truth")
     parser.add_argument("--show", action="store_true",
                         help="Open interactive plot window")
-    parser.add_argument("-o", "--output", default="imu_vs_gps.png",
+    parser.add_argument("-o", "--output", default="results/imu_vs_gps.png",
                         help="Output image filename")
     args = parser.parse_args()
 

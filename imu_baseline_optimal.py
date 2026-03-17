@@ -27,9 +27,9 @@ from imu_preprocessing import (
 def main():
     parser = argparse.ArgumentParser(description="Optimal IMU dead-reckoning baseline")
     parser.add_argument("imu_csv", nargs="?",
-                        default="data/test2/imu_20260304_140431.csv")
-    parser.add_argument("--gpx", default="data/test2/04-Mar-2026-1405.gpx")
-    parser.add_argument("-o", "--output", default="imu_trajectory.csv")
+                        default="data/imu_20260304_140431.csv")
+    parser.add_argument("--gpx", default="data/04-Mar-2026-1405.gpx")
+    parser.add_argument("-o", "--output", default="results/imu_trajectory.csv")
     parser.add_argument("--duration", type=float, default=100.0)
     parser.add_argument("--lpf", type=float, default=15.0,
                         help="Low-pass cutoff Hz (0=disable)")

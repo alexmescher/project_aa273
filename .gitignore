@@ -6,6 +6,7 @@ data/cal_images
 data/sparse
 data/*.db
 results/*.csv
+results/*.png
 __pycache__/
 *.pyc
 .DS_Store
