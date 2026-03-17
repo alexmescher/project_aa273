@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parent
 
 # Defaults (flight 1 / test2)
 DEFAULT_TRAJ = ROOT / "results" / "imu_trajectory.csv"
-DEFAULT_GPX  = ROOT / "data" / "04-Mar-2026-1405.gpx"
+DEFAULT_GPX  = ROOT / "data" / "04-Mar-2026-1323.gpx"
 
 
 def parse_gpx(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
