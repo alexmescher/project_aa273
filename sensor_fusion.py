@@ -197,11 +197,11 @@ def main():
     parser = argparse.ArgumentParser(description="Fuse IMU and vision trajectories and compare to GPX.")
     parser.add_argument("--imu_csv", default="results/imu_trajectory.csv")
     parser.add_argument("--vision_csv", default="results/vision_traj_xy.csv")
-    parser.add_argument("--gpx_file", default="data/04-Mar-2026-1405.gpx")
+    parser.add_argument("--gpx_file", default="data/04-Mar-2026-1323.gpx")
     parser.add_argument("--vision_time_offset", type=float, default=0.0,
                         help="Seconds added to vision timestamps to align with IMU")
-    parser.add_argument("--q_pos", type=float, default=0.05)
-    parser.add_argument("--q_vel", type=float, default=0.5)
+    parser.add_argument("--q_pos", type=float, default=500.0)
+    parser.add_argument("--q_vel", type=float, default=5000.0)
     parser.add_argument("--maha_thresh", type=float, default=9.21)
     parser.add_argument("--save_csv", default="results/fused_traj.csv")
     args = parser.parse_args()
@@ -315,12 +315,19 @@ def main():
     out_df.to_csv(args.save_csv, index=False)
     print(f"Saved: {args.save_csv}")
 
-    plt.figure(figsize=(9, 7))
-    plt.plot(gps_xy[:, 0], gps_xy[:, 1], label="GPS ground truth")
-    plt.plot(imu_aligned[:, 0], imu_aligned[:, 1], label="IMU aligned")
-    plt.plot(vision_aligned[:, 0], vision_aligned[:, 1], label="Vision aligned")
-    plt.plot(fused_aligned[:, 0], fused_aligned[:, 1], label="Fused aligned", linewidth=2)
+    # Compute GPS bounds with padding for axis limits
+    pad = 20.0
+    x_min, x_max = gps_xy[:, 0].min() - pad, gps_xy[:, 0].max() + pad
+    y_min, y_max = gps_xy[:, 1].min() - pad, gps_xy[:, 1].max() + pad
 
+    plt.figure(figsize=(9, 7))
+    plt.plot(gps_xy[:, 0], gps_xy[:, 1], label="GPS", color="black", linewidth=2)
+    plt.plot(imu_aligned[:, 0], imu_aligned[:, 1], label="IMU", color="tab:red", linestyle="--")
+    plt.plot(vision_aligned[:, 0], vision_aligned[:, 1], label="Vision", color="tab:orange", linestyle="--")
+    plt.plot(fused_aligned[:, 0], fused_aligned[:, 1], label="Fused", color="tab:blue", linewidth=2)
+
+    plt.xlim(x_min, x_max)
+    plt.ylim(y_min, y_max)
     plt.xlabel("x [m]")
     plt.ylabel("y [m]")
     plt.title("Trajectory Comparison")
